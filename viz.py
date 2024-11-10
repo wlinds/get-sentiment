@@ -108,6 +108,8 @@ def create_visualizations(df):
     role_time = pd.crosstab(df['yrkesroll_cat'], df['tillräcklig_tid_cat'])
     if 'Ej angiven' in role_time.columns:
         role_time = role_time.drop('Ej angiven', axis=1)
+    if 'Övrigt' in role_time.columns:
+        role_time = role_time.drop('Övrigt', axis=1)
     
     fig1 = go.Figure()
     
@@ -184,7 +186,7 @@ def create_visualizations(df):
     fig2.show(config=config)
 
     # 3. Age Distribution - Violin Plot
-    df_filtered = df[df['tillräcklig_tid_cat'] != 'Ej angiven']
+    df_filtered = df[~df['tillräcklig_tid_cat'].isin(['Ej angiven', 'Övrigt'])]
 
     fig3 = go.Figure()
 
