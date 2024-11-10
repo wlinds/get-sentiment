@@ -107,56 +107,106 @@ maps = {
     },
 
 
-    # Gå direkt på lösning
-
     'hinder': {
         # Time Related
-        r'\btid\w*|hinner|prioriter|kalender|fullboka|almanacka|för mycket att göra': 'Tidsbrist',
-        
+        r'(?:har )?(?:inte )?(?:alltid )?(?:hinn\w+|tar sig tid|tid(?:en)?|tidsbrist)|' + 
+        r'arbetsbelastning|arbetstempo|fullboka\w*|almanacka|möten|tidspress|' +
+        r'spring\w* (?:för )?fort|tar sig inte tid|mellanrum|upptagen|inboka\w*|' +
+        r'under(?:\s)?arbets(?:dag\w*)?|undermålig planering|går (?:för )?fort|' +
+        r'det ena till det andra': 'Tidsrelaterade hinder',
+
         # Stress
-        r'stress|press|tempo|sprint|snabb|bråttom|rus': 'Stress & Tempo',
-        
-        # Work Environment
-        r'möte|arbetsbelastning|deadline|leverans|jobb|arbetsdagen': 'Arbetssituation',
-        
+        r'stress|press|tempo|bråttom|rus|högt tempo|för mycket|många|belastning|' +
+        r'mycket annat|fullt upp|överbelastad|kör(?:-|\s)?bara(?:-|\s)?kör': 'Stress',
+
+        # Emotional
+        r'oro|ångest|rädsla|skam|skuld|rädd|jobbigt|orka|energi|låg energi|' +
+        r'rädslor|osäkerhet|våga|trött\w*|skav|fragmentarisk': 'Emotionella hinder',
+
         # Distractions
-        r'avbrott|störning|brus|mobil|skärm|distrah|social': 'Störningsmoment',
-        
-        # Mental State
-        r'oro|ångest|trött|energi|orka|fokus|splittrad': 'Mentalt tillstånd',
-        
+        r'fokus|distraktion|splittring|brus|mobil|skärm|sociala medier|närvaro|' +
+        r'mentalt|hjärnan|snurra|intryck|koncentration|störning|förmåga|bubbla|' +
+        r'ostörd|avbruten|avbrott': 'Mental närvaro, fokus',
+
+        # Prioritize
+        r'priorit\w*|annat kommer före|mycket annat|andra saker|väljer bort|' +
+        r'tar sig inte|kommer inte till|skjuter upp': 'Prioritering',
+
         # Personal Discipline
-        r'disciplin|självdisciplin|rutin|prioritering|tar sig inte|egen': 'Självdisciplin',
-        
-        # External Demands
-        r'krav|måste|deadlines|förväntn|prestation': 'Externa krav',
-        
-        # Environmental
-        r'miljö|plats|utrymme|ostörd|lugn': 'Miljöfaktorer',
-        
-        # Life Balance
-        r'familj|liv|småbarn|privat|vardagen|logistik': 'Livspussel',
-        
-        # Organizational Culture
-        r'\w*kultur|värde|förstå|acceptans|premierar|klassas': 'Organisationskultur',
-        
-        # Fear
-        r'rädsla|våga|jobbigt|svår|upptäck|förändra': 'Rädsla & Motstånd',
-        
-        # No Blockers
-        r'inga|inget|kan inte komma på några': 'Inga hinder'
+        r'självdisciplin|disciplin|självledarskap|egen|rutiner|tar mig inte|' +
+        r'beteende|vana|öva|svårt att skapa|ny vana': 'Självdisciplin',
+
+        # "Ältande"
+        r'ältande|konstruktiv\w*|definitiva slutsatser|fullständig bild|' +
+        r'fragmentarisk|svårt att agera': 'Process & Ältande',
+
+        # Saknar stöd/struktur
+        r'ingen att reflektera med|saknar någon|ensam|struktur saknas|' +
+        r'behöver stöd|saknar forum': 'Saknar stöd/struktur',
+
+        # Livspusslet
+        r'familj|småbarn|barn|livspusslet|livet|vardagen|privat|logistik|' +
+        r'balans|livets|familjeliv': 'Livspusslet',
+
+        # Actions
+        r'action|prestationshets|leverans|prioriterar action|agerande|' +
+        r'snabb action|fokus framåt|resultat|konkret|checka av|att-göra': 'Action-orienterade hinder',
+
+        # No blockers
+        r'(?:^|\s|,)(?:inga|ingen)(?:\s|\.|,|$)|kan inte komma på|nej|finns inga': 'Inga hinder'
     },
 
 
     'ja_nej_svar': {
-        r'^ja\b|^ja\s|^ja,|^ja!|^ja\.|^absolut|^ja faktiskt|^oftast\b|^ganska nöjd|^(idag|nu) (gör|ja|jag) (det|de)': 'Ja',
-        r'^nej\b|^nej\s|^nej,|^nej\.|^nope|^absolut inte\.?|^tyvärr inte\.?|skulle gärna|^för lite|kunde vara mer|önskar|^inte alltid|kan bli bättre': 'Nej',
-        r'vet inte|vet ej|osäker|kanske|^nja\b|både och|olika|i perioder|ja och nej|ibland|^oftast inte|periodvis|skulle säkert': 'Vet ej'
+        # Strong negatives (check first)
+        r'(?:^|\s|,)(absolut\s+inte|tyvärr\s+inte|såklart\s+inte)(?:\s|\.|,|$)|' +
+        r'(?:^|\s)(nej|nope|näe)(?:\s|\.|,|$)|' +
+        r'inte\s+(?:alltid|för|nog)|' +
+        r'oftast\s+inte|' +
+        r'troligtvis\s+inte|' +
+        r'gör\s+(?:jag|det)\s+(?:nog|troligtvis)\s+inte': 'Nej',
+        
+        # Standard negatives (check second)
+        r'skulle\s+(?:gärna|kunna|vilja|behöva)|' +
+        r'kan\s+(?:nog\s+)?(?:lägga|bli|göra)\s+(?:mer|bättre)|' +
+        r'önskar|borde|kunde\s+vara\s+mer|' +
+        r'mindre\s+tid\s+än\s+önskat|' +
+        r'inte\s+tillräckligt|' +
+        r'sällan|aldrig': 'Nej',
+        
+        # Uncertainty (check third)
+        r'(?:^|\s)vet\s+(?:inte|ej)(?:\s|\.|,|$)|' +
+        r'(?:^|\s)nja\b(?!\s*\.|[^\.]*tillräckligt)|' +  # "nja" om inte "tillräckligt" följer
+        r'(?:^|\s)både\s+och(?:\s|\.|,|$)|' +
+        r'osäker': 'Vet ej',
+        
+        # Strong positives (check fourth)
+        r'(?:^|\s|,)(japp|yes)(?:\s|\.|,|!|$)|' +
+        r'(?:idag|nu)\s+gör\s+(?:jag|det)|' +
+        r'(?:^|\s)ofta\b|' +
+        r'(?:^|\s)oftast(?!\s+inte)|' +  # "oftast" om inte "inte" följer
+        r'absolut(?!\s+inte)|' +  # "absolut" om inte "inte" följer
+        r'ganska\s+nöjd|' +
+        r'god\s+tid|' +
+        r'(?:^|\s)joo\b': 'Ja',
+        
+        # Standard positives (check last)
+        r'(?:^|\s|,)ja(?:\s|\.|,|!|$)|' +
+        r'tillfreds|' +
+        r'tillräckligt|' +
+        r'nöjd\s+med|' +
+        r'fungerar\s+bra|' +
+        r'räcker': 'Ja'
+    },
+
+    'kön': {
+        r'kvinna|Kvinna' : "Kvinna",
+        r'man|Man' : "Man"
     },
 
 
 
-    'yrkesroller': {
+    'yrkesroll': {
         # Top management
         r'vd|ceo|generalsekreterare|': 'VD/CEO',
         r'regionchef|regionsdirektör': 'Chef',
